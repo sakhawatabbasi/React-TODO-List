@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Raleway");
 
-.app {height: 100vh;
+.app {
   background: #241414;
   display: flex;
   flex-direction: column;
@@ -213,7 +213,6 @@ button.btn-close:hover{
   background: none;
   display: flex;
   justify-content: space-between;
-  transition: all 0.5s ease;
 }
 .filt{
   margin-top: 30px;
@@ -315,4 +314,28 @@ button.btn-close:hover{
 
 .footer a:hover{
   color: #7af5b8;
+}
+
+
+/* for mobile screen */
+
+@media only screen and (max-width: 600px) {
+  #filter{
+    width: 100%; 
+  }
+  .filter{
+    font-size: 12px;
+    margin-right: 40px;
+  }
+  .filter:hover{
+    font-size: 12px;
+  }
+  #inputSer{
+    width: 60px;
+    font-size: 0.8rem;
+    margin-left: 15px;
+  }
+  #filter1 {
+    width: 60%;
+  }
 }
