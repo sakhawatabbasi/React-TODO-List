@@ -10,7 +10,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {toast,ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
 function App() {
   const [tasks, setTasks] = useState([]);
   const [filter, setFilter] = useState('all');
@@ -19,60 +18,69 @@ function App() {
   const [searchText, setSearchText] = useState(''); 
   const [show, setShow] = useState(false);
 
-
-
-  const handleAddTask = (event) => {
-    event.preventDefault();
-    const input = event.target.elements.input;
-    if (input.value.trim() !== '') {
-      setTasks([...tasks, { id: Date.now(), text: input.value, completed: false }]);
-      input.value = '';
-    }
+const handleAddTask = (event) => {
+  event.preventDefault();
+  const input = event.target.elements.input;
+  if (input.value.trim() !== '') {
+    setTasks([...tasks, { id: Date.now(), text: input.value, completed: false }]);
+    input.value = '';
     toast.success('Task added successfully!');
-  };
+  }
+};
 
   const handleDelete = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id));
-    toast.success('Task deleted successfully!');  
+    setTasks(tasks.filter((task) => task.id !== id)); 
+    toast.error('task delete successfully!');
   };
 
   const handleCompleteTask = (id) => {
     setTasks(tasks.map((task) => {
       if (task.id === id) {
-        return { ...task, completed: !task.completed };
+        const completed = !task.completed;
+        if (completed) {
+          toast.success('task completed successfully!');
+        }
+        return { ...task, completed };
       }
-      
-       else {
-        return task;
-      }
-      
+      return task;
     }));
-   
-toast.success('Task completed!');
   };
-
+ 
   const handleCompleteAllTasks = () => {
     setTasks(tasks.map((task) => ({ ...task, completed: true })));
-    toast.success('All tasks completed!');
+    
+    // check if all tasks are completed
+    const allCompleted = tasks.every((task) => task.completed === true);
+    
+    // show toast message if all tasks are completed
+    if (!allCompleted) {
+      toast.success("All tasks completed!");
+    }
   };
 
+  
   const handleDeleteCompletedTasks = () => {
     setTasks(tasks.filter((task) => task.completed && ! task.completed));
     toast.warn('All tasks cleared!');
   };
 
+
+
   const filteredTasks = tasks.filter((task) => {
     if (filter === 'completed') {
       return task.completed;
-    } else if (filter === 'incomplete') {
+    } 
+    else if (filter === 'incomplete') {
+      
       return !task.completed;
     } else {
       return true;
-    }
+    }        
   }).filter((task) => task.text.toLowerCase().includes(searchText.toLowerCase()));
   const handleEdit = (id, text) => {
     setEditingTask(id);
     setEditingText(text);
+  
   };
 
   const handleSave = (id) => {
@@ -102,17 +110,28 @@ toast.success('Task completed!');
 
   return (
     <div className="app">
-       <ToastContainer/>
-      <h1 id="title">
-        <FontAwesomeIcon icon={faTasks} />&nbsp; Todo List
-      </h1>
-      {/* add task */}
-    <AddTask 
-              handleAddTask={handleAddTask}
-              handleClose={handleClose}
-              handleShow={handleShow}
-              show={show}
+
+       <ToastContainer
+       position="top-right"
+       autoClose={1000}
+       closeOnClick
+       rtl={false}
+       pauseOnFocusLoss
+       draggable
+       pauseOnHover
+       theme="light"
+       />
+
+      <h1 id="title"><FontAwesomeIcon icon={faTasks} /> &nbsp; Todo List </h1>
+
+{/* add task */}
+      <AddTask 
+        handleAddTask={handleAddTask}
+        handleClose={handleClose}
+        handleShow={handleShow}
+        show={show}
         />
+
 {/* filters */}
       <Filters
         searchText={searchText}
@@ -120,9 +139,9 @@ toast.success('Task completed!');
         filter={filter} 
         setFilter={setFilter}
         tasks={tasks}
-        
       />
-  {/* Task list */}
+
+{/* Task list */}
        <TaskList
         filteredTasks={filteredTasks}
         editingTask={editingTask}
@@ -132,9 +151,12 @@ toast.success('Task completed!');
         handleCompleteTask={handleCompleteTask}
         handleDelete={handleDelete} 
         handleEdit={handleEdit}
-    
+        filter={filter}
         />
-        {/* footer */}
+
+
+
+{/* footer */}
       <Footer 
       handleCompleteAllTasks={handleCompleteAllTasks}  
       handleDeleteCompletedTasks={handleDeleteCompletedTasks} 
