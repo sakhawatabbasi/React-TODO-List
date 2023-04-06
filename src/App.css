@@ -324,11 +324,13 @@ button.btn-close:hover{
     width: 100%; 
   }
   .filter{
-    font-size: 12px;
+    font-size:8px;
     margin-right: 40px;
+    width: 65px;
   }
   .filter:hover{
-    font-size: 12px;
+    font-size: 8px;
+    color: red;
   }
   #inputSer{
     width: 60px;
